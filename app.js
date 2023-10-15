@@ -1,27 +1,22 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const multer = require('multer');
+const jwt = require('jsonwebtoken')
 const app = express()
 
-mongoose.connect("mongodb://127.0.0.1:27017/example");
+app.use(express.json());
 
-// const db = mongoose.connection;
-// db.on("error", console.error.bind(console, "connection error: "));
-// db.once("open", function () {
-//     console.log("Connected successfully");
-// });
+mongoose.connect("mongodb://127.0.0.1:27017/user_management", { useNewUrlParser: true, useUnifiedTopology: true });
 
-const userSchema = new mongoose.Schema({
-    name: String,
-    age: Number
-})
-
-const userModel = new mongoose.model("User", userSchema)
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "Connection error: "));
+db.once("open", function () {
+    console.log("Connected Successfully");
+});
 
 const userRouter = require('./routes/userRoutes')
-
-app.use(express.json());
 app.use('/users', userRouter)
 
 app.listen(3000, () => {
-    console.log("Server Running")
+    console.log("Server is running on port 3000")
 })
