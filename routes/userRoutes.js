@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router()
 const controller = require('../controllers/userController')
 const multer = require('multer');
-const tryCatch=require("../middleware/TryCatchMiddleware")
-const checkAuth=require("../middleware/authMiddleware")
+const tryCatch = require("../Middleware/tryCatch")
+const checkAuth = require("../Middleware/checkAuth")
 
-const upload = multer({ dest: 'uploads/' });
+const storage = multer.diskStorage({
+  destination: 'uploads/',
+  filename: (req, file, cb) => cb(null, file.originalname)
+});
+
+const upload = multer({ storage })
 
 router.use(express.json());
 
